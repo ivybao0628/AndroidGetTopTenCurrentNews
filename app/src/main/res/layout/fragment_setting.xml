@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_text_view_choose_section"
+        android:textSize="@dimen/abc_text_size_body_2_material"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"/>
+
+    <Spinner
+        android:id="@+id/spinnerNewsSection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/btn_dropdown"
+        android:entries="@array/news_section"
+        android:spinnerMode="dialog"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"/>
+
+
+    <CheckBox
+        android:id="@id/checkbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_checkbox_is_auto_swap"
+        android:textSize="@dimen/abc_text_size_body_2_material"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_scale_auto_swap_time"
+        android:textSize="@dimen/abc_text_size_body_2_material"
+        android:paddingTop="16dp"/>
+
+    <NumberPicker
+        android:id="@+id/numberPickerAutoSwapTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="16dp"/>
+
+    <Button
+        android:id="@+id/buttonGetNews"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_button_get_news"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        />
+
+
+</LinearLayout>

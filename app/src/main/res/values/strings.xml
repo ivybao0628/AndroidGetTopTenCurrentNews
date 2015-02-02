@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Current Top Ten News</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Text Resources for Configuration -->
+    <string name="defaultSharePreferences">defaultSharePreferences</string>
+    <!-- deprecated -->
+    <string name="isAutoSwap">isAutoSwap</string>
+    <string name="autoSwapTime">autoSwapTime</string>
+    <string name="newsSectionPosition">newsSectionPosition</string>
+
+    <!--API KEY-->
+    <string name="USA_NEWS_API_KEY">p94pbb9k8d5c9yn9aj6dmaqb</string>
+    <string name="MICROSOFT_ACCOUNT_KEYT">OnU2Mxti1LltKV0xiBXh0wvlN3DbXwXngWfcHZ+1tME</string>
+
+    <!-- Text Resources for fragment_setting -->
+    <string name="text_button_get_news">Get Latest News Now!</string>
+    <string name="text_text_view_choose_section">Choose Your Section:</string>
+    <string name="text_checkbox_is_auto_swap">Turn on Auto Swap</string>
+    <string name="text_scale_auto_swap_time">Auto Swap Timer:</string>
+    <array name="news_section">
+        <item>home</item>
+        <item>news</item>
+        <item>travel</item>
+        <item>money</item>
+        <item>sports</item>
+        <item>life</item>
+        <item>tech</item>
+        <item>weather</item>
+        <item>test</item>
+        <item>nation</item>
+        <item>offbeat</item>
+        <item>washington</item>
+        <item>world</item>
+        <item>religion</item>
+        <item>opinion</item>
+        <item>yl-health</item>
+        <item>nfl</item>
+        <item>mlb</item>
+        <item>nba</item>
+        <item>nhl</item>
+        <item>collegefootball</item>
+        <item>collegebasketball</item>
+        <item>highschool</item>
+        <item>motorsports</item>
+        <item>golf</item>
+        <item>soccer</item>
+        <item>horseracing</item>
+        <item>people</item>
+        <item>music</item>
+        <item>reviews</item>
+    </array>
+
+</resources>
