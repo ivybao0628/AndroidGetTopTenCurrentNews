@@ -2,8 +2,8 @@ package com.singwai.currenttoptennews.configutation;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
-import com.singwai.currenttoptennews.R;
 import com.singwai.currenttoptennews.Utility.SharePreferenceUtility;
 
 /**
@@ -18,8 +18,8 @@ public class Configuration {
     private static final String AUTO_SWAP_TIME = "autoSwapTime";
     private static final String NEWS_SECTION = "newsSectionPosition";
 
-    public static Configuration get_instance(Context context){
-        if (_instance ==null){
+    public static Configuration get_instance(Context context) {
+        if (_instance == null) {
             //Since the configuration will live for very long time, we should use the application context.
             Configuration._context = context.getApplicationContext();
             _instance = new Configuration();
@@ -28,8 +28,8 @@ public class Configuration {
         return _instance;
     }
 
-    public static Configuration get_instance (){
-        if (_instance == null){
+    public static Configuration get_instance() {
+        if (_instance == null) {
             throw new RuntimeException("A context is required to initialize a configuration object");
         }
         return _instance;
@@ -64,10 +64,9 @@ public class Configuration {
     private int newsSectionPosition;
 
 
-
     //Save updated configuration info to SharePreferences
     //In this purposes, we will only save the configuration when user fire the search button.
-    public static void saveConfiguration (){
+    public static void saveConfiguration() {
         SharedPreferences.Editor editor = SharePreferenceUtility.getEditor(_context);
         editor.putBoolean(IS_AUTO_SWAP, _instance.getAutoSwap());
         editor.putInt(AUTO_SWAP_TIME, _instance.getAutoSwapTime());
@@ -77,7 +76,7 @@ public class Configuration {
     }
 
     //Get configuration info from SharePreferences
-    private static void loadConfiguration (){
+    private static void loadConfiguration() {
         SharedPreferences sharedPreferences = SharePreferenceUtility.getSharePreferences(_context);
         _instance.setAutoSwap(sharedPreferences.getBoolean(IS_AUTO_SWAP, true));
         _instance.setAutoSwapTime(sharedPreferences.getInt(AUTO_SWAP_TIME, 15));
@@ -85,5 +84,16 @@ public class Configuration {
     }
 
     //Singleton design.
-    private Configuration(){}
+    private Configuration() {
+    }
+
+    public static void print() {
+        if (_instance == null) {
+            return;
+        } else {
+            Log.e("Checking Configuration ", "is Auto swipe " + _instance.getAutoSwap());
+            Log.e("Checking Configuration ", "Timer:  " + _instance.getAutoSwapTime());
+            Log.e("Checking Configuration ", " Position: " + _instance.getNewsSectionPosition());
+        }
+    }
 }

@@ -1,7 +1,9 @@
 package com.singwai.currenttoptennews.activity.Fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +12,10 @@ import android.widget.CheckBox;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 
+import com.singwai.currenttoptennews.MainActivity;
 import com.singwai.currenttoptennews.R;
 import com.singwai.currenttoptennews.configutation.Configuration;
+import com.singwai.currenttoptennews.modal.AsyncGetNews;
 
 /**
  * Created by Singwai Chan on 2/1/15.
@@ -57,6 +61,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         mSpinner = (Spinner) rootView.findViewById(R.id.spinnerNewsSection);
 
         mButton = (Button)rootView.findViewById(R.id.buttonGetNews);
+        mButton.setOnClickListener(this);
         //Fill Configuration data;
         fillConfiguration();
 
@@ -64,6 +69,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     public void fillConfiguration() {
+        Log.e("Filling date", " ");
+        Configuration.print();
         mCheckBox.setChecked(configuration.getAutoSwap());
         mNumberPicker.setValue(configuration.getAutoSwapTime());
         mSpinner.setSelection(configuration.getNewsSectionPosition());
@@ -73,10 +80,19 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View v) {
         if (v.getId() == R.id.buttonGetNews){
             //Save Configuration
+            Configuration.print();
+            getConfigurationDataFromViews();
             Configuration.saveConfiguration();
+            Configuration.print();
             //Get News
-
+            ((MainActivity) this.getActivity()).getLatestNews(configuration.getNewsSectionPosition());
         }
+    }
+
+    public void getConfigurationDataFromViews (){
+        configuration.setAutoSwap(mCheckBox.isChecked());
+        configuration.setAutoSwapTime(mNumberPicker.getValue());
+        configuration.setNewsSectionPosition(mSpinner.getSelectedItemPosition());
     }
 
 

@@ -1,10 +1,12 @@
 package com.singwai.currenttoptennews.modal;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
 
+import com.singwai.currenttoptennews.MainActivity;
 import com.singwai.currenttoptennews.R;
 
 import net.minidev.json.JSONArray;
@@ -29,21 +31,48 @@ import java.util.ArrayList;
 /**
  * Created by Singwai Chan on 2/1/15.
  */
-public class AsyncGetNews extends AsyncTask <String, Void, ArrayList<NewsItem>> {
-    Context context;
+public class AsyncGetNews extends AsyncTask<Integer, Void, ArrayList<NewsItem>> {
+    private Context context;
+    private ProgressDialog dialog;
 
+    public AsyncGetNews(Context context) {
+        this.context = context;
+        this.dialog = new ProgressDialog(context);
+    }
+
+    protected void onPreExecute() {
+        dialog.setMessage("Fetching data, please wait.");
+        dialog.show();
+    }
 
     @Override
-    protected ArrayList<NewsItem> doInBackground(String... params) {
+    protected ArrayList<NewsItem> doInBackground(Integer... params) {
         ArrayList<NewsItem> result;
-        String newsSection = params[0];
+        Integer newsSection = params[0];
         result = USATodayNews.getNews(newsSection, context);
-        for (int i = 0 ; i < result.size() ; i++){
+        for (int i = 0; i < result.size(); i++) {
             NewsItem item = result.get(i);
-            item.setPictureLink(MicrosoftBingImageSearch.getImageLink(item.getTitle(), context));
+            item.setImageLink(MicrosoftBingImageSearch.getImageLink(item.getTitle(), context));
         }
-
+        for (int i = 0; i < result.size(); i++) {
+            Log.e("USA NEWS RESULT ", result.get(i).getTitle());
+            Log.e("USA NEWS RESULT ", result.get(i).getDescription());
+            Log.e("USA NEWS RESULT ", result.get(i).getPubDate());
+            Log.e("USA NEWS RESULT ", result.get(i).getLink());
+            Log.e("USA NEWS RESULT " , result.get(i).getImageLink());
+        }
         return result;
+    }
+
+    @Override
+    protected void onPostExecute(ArrayList<NewsItem> newsItems) {
+        super.onPostExecute(newsItems);
+        if (dialog.isShowing()) {
+            dialog.dismiss();
+        }
+        Log.e ("Checking class" , context.getClass()+"");
+        ((MainActivity)context).addNewsFragment(newsItems);
+        //Call Main activity to populate the
     }
 
     public static class USATodayNews {
@@ -54,10 +83,11 @@ public class AsyncGetNews extends AsyncTask <String, Void, ArrayList<NewsItem>> 
         private static final String PARSE_KEY_DESCRIPTION = "description";
         private static final String PARSE_KEY_LINK = "link";
         private static final String PARSE_KEY_PUBLISH_DATE = "pubDate";
-        private static final String PARSE_KEY_TITLE ="title";
+        private static final String PARSE_KEY_TITLE = "title";
 
-        public static ArrayList<NewsItem> getNews (final String section, final Context context){
+        public static ArrayList<NewsItem> getNews(final Integer section, final Context context) {
             String resultString = "";
+            String sectionString = context.getResources().getStringArray(R.array.news_section)[section];
             //ArrayList<NewsItem> result;
             HttpClient httpClient = new DefaultHttpClient();
 
@@ -68,9 +98,9 @@ public class AsyncGetNews extends AsyncTask <String, Void, ArrayList<NewsItem>> 
             nameValuePairs.add(new BasicNameValuePair("api_key", context.getString(R.string.USA_NEWS_API_KEY)));
             String paramsString = URLEncodedUtils.format(nameValuePairs, "UTF-8");
 
-            Log.e("Get link result ", API_ENTRY + section + "?" + paramsString);
+            Log.e("Get link result ", API_ENTRY + sectionString + "?" + paramsString);
             //Build Link
-            HttpGet httpget = new HttpGet(API_ENTRY + section + "?" + paramsString);
+            HttpGet httpget = new HttpGet(API_ENTRY + sectionString + "?" + paramsString);
             //Execute and get the response.
             HttpResponse response = null;
             try {
@@ -105,8 +135,8 @@ public class AsyncGetNews extends AsyncTask <String, Void, ArrayList<NewsItem>> 
         }
 
         //Input = USAToday's API JSON Result in string.
-        private static ArrayList<NewsItem> parseJSON (final String JSONStringResult){
-            if (!JSONValue.isValidJson(JSONStringResult)){
+        private static ArrayList<NewsItem> parseJSON(final String JSONStringResult) {
+            if (!JSONValue.isValidJson(JSONStringResult)) {
                 throw new RuntimeException("Invalid JSON String");
             }
             ArrayList<NewsItem> result = new ArrayList<>();
@@ -124,10 +154,13 @@ public class AsyncGetNews extends AsyncTask <String, Void, ArrayList<NewsItem>> 
                 );
                 result.add(temp);
             }
+
+
             return result;
         }
 
-        private USATodayNews(){}
+        private USATodayNews() {
+        }
 
     }
 
@@ -142,7 +175,7 @@ public class AsyncGetNews extends AsyncTask <String, Void, ArrayList<NewsItem>> 
 
 
         //Input = title from USA TODAY's news. Search the first image from bing.
-        public static String getImageLink (final String title, final Context context){
+        public static String getImageLink(final String title, final Context context) {
             String resultString = "";
             String API_KEY = context.getString(R.string.MICROSOFT_ACCOUNT_KEYT);
             //For some reason post method doesn't work.
@@ -154,11 +187,16 @@ public class AsyncGetNews extends AsyncTask <String, Void, ArrayList<NewsItem>> 
 
             //Build Link
             //Hard coded for now.
-            HttpGet httpget = new HttpGet(API_ENTRY+"Query=%27"+title+"%27");
+            String queryString = title.replaceAll("[^a-zA-z0-9]", "+");
+
+            Log.e("Bing Search ", queryString);
+            Log.e("Bing Search ", API_ENTRY + "&Query='" + queryString + "'");
+            HttpGet httpget = new HttpGet(API_ENTRY + "&Query=%27" + queryString + "%27");
+
             //HttpGet httpget = new HttpGet(APILink + SECTION[0] + "?" + paramsString);
             String auth = API_KEY + ":" + API_KEY;
             String encodedAuth = Base64.encodeToString(auth.getBytes(), Base64.NO_WRAP);
-            Log.e("", encodedAuth);
+            //Log.e("", encodedAuth);
             httpget.addHeader("Authorization", "Basic " + encodedAuth);
 
 
@@ -190,21 +228,29 @@ public class AsyncGetNews extends AsyncTask <String, Void, ArrayList<NewsItem>> 
                     e.printStackTrace();
                 }
             }
-             //todo Check and make sure there is at least 1 result.
-             return parseJSON(resultString);
+            //todo Check and make sure there is at least 1 result.
+            return parseJSON(resultString, context);
         }
 
-        private static String parseJSON (final String JSONStringResult){
-            if (!JSONValue.isValidJson(JSONStringResult)){
+        private static String parseJSON(final String JSONStringResult, final Context context) {
+            if (!JSONValue.isValidJson(JSONStringResult)) {
                 throw new RuntimeException("Invalid JSON String");
             }
+            Log.e("Bing JSON STRING ", JSONStringResult);
             JSONObject jsonObject = (JSONObject) JSONValue.parse(JSONStringResult);
             jsonObject = (JSONObject) jsonObject.get(PARSE_JSON_D);
             //Since we set out top = 1, we will only get one result.
-            jsonObject = (JSONObject) ((JSONArray) jsonObject.get(PARSE_JSON_RESULTS)).get(0);
-            jsonObject = (JSONObject) jsonObject.get(PARSE_JSON_THUMBNAIL);
-            String url = (String) jsonObject.get(PARSE_JSON_MEDIA_URL);
-            return url;
+            JSONArray jsonArray = ((JSONArray) jsonObject.get(PARSE_JSON_RESULTS));
+            //Check see if there is a result for the string
+            if (jsonArray.size() > 0) {
+                jsonObject = (JSONObject)jsonArray.get(0);
+                jsonObject = (JSONObject) jsonObject.get(PARSE_JSON_THUMBNAIL);
+                String url = (String) jsonObject.get(PARSE_JSON_MEDIA_URL);
+                return url;
+            }
+            else {
+                return context.getString(R.string.image1);
+            }
 
         }
     }

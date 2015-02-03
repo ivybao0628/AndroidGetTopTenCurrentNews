@@ -18,7 +18,7 @@ import java.io.IOException;
 /**
  * Created by Singwai Chan on 2/1/15.
  */
-public class AsyncHttpImageLinktoBitmap extends AsyncTask<String, Void, Bitmap> {
+public class AsyncHttpImageLinkToBitmap extends AsyncTask<String, Void, Bitmap> {
 
     @Override
     protected Bitmap doInBackground(String... params) {

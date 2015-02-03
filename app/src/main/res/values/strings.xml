@@ -52,7 +52,8 @@
         <item>horseracing</item>
         <item>people</item>
         <item>music</item>
-        <item>reviews</item>
     </array>
 
+        <string name="image1">http://ts4.mm.bing.net/th?id=HN.608007360550535464&amp;w=187&amp;h=186&amp;c=7&amp;rs=1&amp;qlt=90&amp;o=4&amp;pid=1.7</string>
+        <string name="image2">http://ts2.mm.bing.net/th?id=HN.608023939119251704&amp;w=156&amp;h=186&amp;c=7&amp;rs=1&amp;qlt=90&amp;o=4&amp;pid=1.7</string>
 </resources>

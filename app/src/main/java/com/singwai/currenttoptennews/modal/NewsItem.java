@@ -1,15 +1,26 @@
 package com.singwai.currenttoptennews.modal;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by Singwai Chan on 2/1/15.
  */
 public class NewsItem {
 
+    public static final String PARSE_TITLE = "title";
+    public static final String PARSE_DESCRIPTION = "description";
+    public static final String PARSE_LINK = "link";
+    public static final String PARSE_PUBLISH_DATE = "pubDate";
+    public static final String PARSE_IMAGE_LINK = "imageLink";
     String title;
     String description;
     String link;
     String pubDate;
-    String pictureLink;
+    String imageLink;
+
+
+
+    Bitmap bitmap;
 
 
     public NewsItem(String title, String description, String link, String pubDate, String pictureLink){
@@ -17,7 +28,7 @@ public class NewsItem {
         this.setDescription(description);
         this.setLink(link);
         this.setPubDate(pubDate);
-        this.setPictureLink(pictureLink);
+        this.setImageLink(pictureLink);
     }
 
     //Sometime link is not available.
@@ -29,6 +40,7 @@ public class NewsItem {
         this.setLink(link);
         this.setPubDate(pubDate);
     }
+
 
     //List of getter and setter. Add validation as needed.
     public String getTitle() {
@@ -64,12 +76,20 @@ public class NewsItem {
         this.pubDate = pubDate;
     }
 
-    public String getPictureLink() {
-        return pictureLink;
+    public String getImageLink() {
+        return imageLink;
     }
 
-    public void setPictureLink(String pictureLink) {
-        this.pictureLink = pictureLink;
+    public void setImageLink(String imageLink) {
+        this.imageLink = imageLink;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
     }
 
 }
