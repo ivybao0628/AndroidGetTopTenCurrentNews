@@ -19,8 +19,15 @@ Here is the list of function that are still missing.
     - Block back
     - Action Bar add setting go to page 0
     - Clean all data when search button is clicked for the second time.
-    - Error Checking EX. Connectivity, WebService down
+
     - Make link clickable.
+        resolve with intent
+    - Fix swipe
+        There is a leak.
+
+    - Error Checking EX. Connectivity, WebService down
+    - Check network during splash screen
+        error then .finish if internet is not available.
 
 @Better design pattern
 @Better variable name

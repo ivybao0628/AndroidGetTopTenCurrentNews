@@ -42,9 +42,9 @@ public class AsyncGetNews extends AsyncTask<Integer, Void, ArrayList<NewsItem>> 
     }
 
     protected void onPreExecute() {
-        dialog.setMessage("Fetching data, please wait.");
-
-        dialog.show();
+        //dialog.setMessage("Fetching data, please wait.");
+        //dialog.setCanceledOnTouchOutside(false);
+        //dialog.show();
     }
 
     @Override
@@ -53,7 +53,7 @@ public class AsyncGetNews extends AsyncTask<Integer, Void, ArrayList<NewsItem>> 
         Integer newsSection = params[0];
         result = USATodayNews.getNews(newsSection, context);
 
-        for (int i = 0 ; i < result.size(); i ++){
+        for (int i = 0; i < result.size(); i++) {
             result.get(i).setImageLink(MicrosoftBingImageSearch.getImageLink(result.get(i).getTitle(), context));
         }
         for (int i = 0; i < result.size(); i++) {
@@ -61,7 +61,7 @@ public class AsyncGetNews extends AsyncTask<Integer, Void, ArrayList<NewsItem>> 
             Log.e("USA NEWS RESULT ", result.get(i).getDescription());
             Log.e("USA NEWS RESULT ", result.get(i).getPubDate());
             Log.e("USA NEWS RESULT ", result.get(i).getLink());
-            Log.e("USA NEWS RESULT " , result.get(i).getImageLink());
+            Log.e("USA NEWS RESULT ", result.get(i).getImageLink());
         }
         return result;
     }
@@ -72,8 +72,8 @@ public class AsyncGetNews extends AsyncTask<Integer, Void, ArrayList<NewsItem>> 
         if (dialog.isShowing()) {
             dialog.dismiss();
         }
-        Log.e ("Checking class" , context.getClass()+"");
-        ((MainActivity)context).addNewsFragment(newsItems);
+        Log.e("Checking class", context.getClass() + "");
+        ((MainActivity) context).addNewsFragment(newsItems);
         //Call Main activity to populate the
     }
 
@@ -111,7 +111,11 @@ public class AsyncGetNews extends AsyncTask<Integer, Void, ArrayList<NewsItem>> 
                 e1.printStackTrace();
             }
 
-            HttpEntity entity = response.getEntity();
+            HttpEntity entity = null;
+            if (response != null) {
+                entity = response.getEntity();
+            }
+
             if (entity != null) {
                 InputStream inputStream = null;
                 try {
@@ -138,10 +142,13 @@ public class AsyncGetNews extends AsyncTask<Integer, Void, ArrayList<NewsItem>> 
 
         //Input = USAToday's API JSON Result in string.
         private static ArrayList<NewsItem> parseJSON(final String JSONStringResult) {
-            if (!JSONValue.isValidJson(JSONStringResult)) {
-                throw new RuntimeException("Invalid JSON String");
-            }
             ArrayList<NewsItem> result = new ArrayList<>();
+            if (!JSONValue.isValidJson(JSONStringResult)|| JSONStringResult== "") {
+                return result;
+                //throw new RuntimeException("Invalid JSON String");
+            }
+
+            Log.e ("Inspect JSON object", "JSON" + JSONStringResult);
             JSONObject jsonObject = (JSONObject) JSONValue.parse(JSONStringResult);
             JSONArray stories = (JSONArray) jsonObject.get(PARSE_KEY_STORIES);
             //Log.e ("all info" , "STORY ARRAY" + stories.toString());
@@ -244,12 +251,11 @@ public class AsyncGetNews extends AsyncTask<Integer, Void, ArrayList<NewsItem>> 
             JSONArray jsonArray = ((JSONArray) jsonObject.get(PARSE_JSON_RESULTS));
             //Check see if there is a result for the string
             if (jsonArray.size() > 0) {
-                jsonObject = (JSONObject)jsonArray.get(0);
+                jsonObject = (JSONObject) jsonArray.get(0);
                 jsonObject = (JSONObject) jsonObject.get(PARSE_JSON_THUMBNAIL);
                 String url = (String) jsonObject.get(PARSE_JSON_MEDIA_URL);
                 return url;
-            }
-            else {
+            } else {
                 //Return a placeholder image from string resource.
                 return context.getString(R.string.image1);
             }

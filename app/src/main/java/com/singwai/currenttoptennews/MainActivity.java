@@ -95,7 +95,7 @@ public class MainActivity extends ActionBarActivity {
         if (fragments.size()>1){
             //Remove all news fragments
             //Remove from the back for faster performance.
-            for (int i = fragments.size()-1 ; i > 1; i --){
+            for (int i = fragments.size()-1 ; i > 0; i --){
                 fragments.remove(i);
             }
         }
