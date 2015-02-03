@@ -11,7 +11,6 @@ import com.singwai.currenttoptennews.activity.Fragment.BaseFragment;
 import com.singwai.currenttoptennews.activity.Fragment.HomeFragment;
 import com.singwai.currenttoptennews.activity.Fragment.NewsFragment;
 import com.singwai.currenttoptennews.modal.AsyncGetNews;
-import com.singwai.currenttoptennews.modal.AsyncHttpImageLinkToBitmap;
 import com.singwai.currenttoptennews.modal.NewsItem;
 
 import java.util.ArrayList;
@@ -39,7 +38,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (asyncGetNews!= null && asyncGetNews.getStatus() == AsyncTask.Status.RUNNING)
+            if (asyncGetNews != null && asyncGetNews.getStatus() == AsyncTask.Status.RUNNING)
                 asyncGetNews.cancel(true);
             Log.e("Back Back ", "Back Button");
         }
@@ -77,7 +76,8 @@ public class MainActivity extends ActionBarActivity {
         fragmentPagerAdapter.notifyDataSetChanged();
     }
 
-//    public void swipViewPager (){
+// swipe example
+// public void swipViewPager (){
 //        Handler handler = new Handler();
 //        Runnable runnable = new Runnable() {
 //            @Override
@@ -94,12 +94,14 @@ public class MainActivity extends ActionBarActivity {
 //        handler.postDelayed(runnable, 5000L);
 //    }
 
-    public void getLatestNews (int section){
-        if (asyncGetNews == null){
+    public void getLatestNews(int section) {
+
+        if (asyncGetNews == null) {
             asyncGetNews = new AsyncGetNews(this);
-            asyncGetNews.execute(0);
+            asyncGetNews.execute(section);
             asyncGetNews = null;
         }
+
         //todo move the bing search here.
     }
 

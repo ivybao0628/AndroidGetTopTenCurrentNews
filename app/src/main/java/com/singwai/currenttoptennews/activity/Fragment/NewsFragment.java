@@ -1,7 +1,7 @@
 package com.singwai.currenttoptennews.activity.Fragment;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +12,13 @@ import android.widget.TextView;
 
 import com.singwai.currenttoptennews.R;
 import com.singwai.currenttoptennews.Utility.ViewUtility;
+import com.singwai.currenttoptennews.modal.AsyncHttpImageLinkToBitmap;
 import com.singwai.currenttoptennews.modal.NewsItem;
 
 /**
  * Created by Singwai Chan on 2/1/15.
  */
-public class NewsFragment extends BaseFragment {
+public class NewsFragment extends BaseFragment  {
 
     private NewsItem newsItem;
     private TextView titleTextView;
@@ -25,6 +26,7 @@ public class NewsFragment extends BaseFragment {
     private TextView linkTextView;
     private TextView publishDateTextView;
     private ImageView thumbnailImageView;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,22 @@ public class NewsFragment extends BaseFragment {
                 args.getString(NewsItem.PARSE_LINK, "ERROR"),
                 args.getString(NewsItem.PARSE_PUBLISH_DATE, "ERROR"),
                 args.getString(NewsItem.PARSE_IMAGE_LINK, "ERROR"));
+        //todo get bitmap here
+        getBitmapTask();
+    }
+
+    public void getBitmapTask() {
+        AsyncHttpImageLinkToBitmap testAsyncTask = new AsyncHttpImageLinkToBitmap(new FragmentCallback() {
+            @Override
+            public void onTaskDone() {
+                //Attach the image
+                if (thumbnailImageView != null) {
+                    thumbnailImageView.setImageBitmap(newsItem.getBitmap());
+                }
+            }
+        }, newsItem);
+
+        testAsyncTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     @Override
@@ -54,23 +72,22 @@ public class NewsFragment extends BaseFragment {
             publishDateTextView = (TextView) rootView.findViewById(R.id.textViewNewsPublishDate);
             publishDateTextView.setText("Publish Date: " + newsItem.getPubDate());
             thumbnailImageView = (ImageView) rootView.findViewById(R.id.imageViewNewsThumbnail);
+            if (thumbnailImageView != null && newsItem.getBitmap() != null) {
+                thumbnailImageView.setImageBitmap(newsItem.getBitmap());
+            }
         }
         ViewGroup parent = (ViewGroup) rootView.getParent();
         if (parent != null) {
             parent.removeView(rootView);
             //Shuffle views here.
             //This mean that the first the the view will always look the same.
-            ViewUtility.shuffleLinearLayout((LinearLayout)rootView);
+            ViewUtility.shuffleLinearLayout((LinearLayout) rootView);
         }
-
         Log.e("onCreateView", "Checking " + newsItem.getTitle());
-
-
-
         return rootView;
     }
 
-
-
-
+    public interface FragmentCallback {
+        public void onTaskDone();
+    }
 }

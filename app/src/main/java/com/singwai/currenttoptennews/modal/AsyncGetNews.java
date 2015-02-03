@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.singwai.currenttoptennews.MainActivity;
 import com.singwai.currenttoptennews.R;
+import com.singwai.currenttoptennews.Utility.Utility;
 
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
@@ -50,9 +51,9 @@ public class AsyncGetNews extends AsyncTask<Integer, Void, ArrayList<NewsItem>> 
         ArrayList<NewsItem> result;
         Integer newsSection = params[0];
         result = USATodayNews.getNews(newsSection, context);
-        for (int i = 0; i < result.size(); i++) {
-            NewsItem item = result.get(i);
-            item.setImageLink(MicrosoftBingImageSearch.getImageLink(item.getTitle(), context));
+
+        for (int i = 0 ; i < result.size(); i ++){
+            result.get(i).setImageLink(MicrosoftBingImageSearch.getImageLink(result.get(i).getTitle(), context));
         }
         for (int i = 0; i < result.size(); i++) {
             Log.e("USA NEWS RESULT ", result.get(i).getTitle());
@@ -164,7 +165,6 @@ public class AsyncGetNews extends AsyncTask<Integer, Void, ArrayList<NewsItem>> 
 
     }
 
-
     public static class MicrosoftBingImageSearch {
         private static final String API_ENTRY = "https://api.datamarket.azure.com/Bing/Search/v1/Image?Market=%27en-US%27&Adult=%27Moderate%27&ImageFilters=%27Size%3ASmall%27&$format=json&$top=1";
 
@@ -182,23 +182,23 @@ public class AsyncGetNews extends AsyncTask<Integer, Void, ArrayList<NewsItem>> 
             //Only Get request work for this API.
             //Prepare Post request.
 
-
             HttpClient httpClient = new DefaultHttpClient();
 
             //Build Link
-            //Hard coded for now.
-            String queryString = title.replaceAll("[^a-zA-z0-9]", "+");
+            //Clean link
+            String queryString = Utility.cleanURL(title);
 
+            //Check link
             Log.e("Bing Search ", queryString);
             Log.e("Bing Search ", API_ENTRY + "&Query='" + queryString + "'");
             HttpGet httpget = new HttpGet(API_ENTRY + "&Query=%27" + queryString + "%27");
 
             //HttpGet httpget = new HttpGet(APILink + SECTION[0] + "?" + paramsString);
+            //Basic auth.
             String auth = API_KEY + ":" + API_KEY;
             String encodedAuth = Base64.encodeToString(auth.getBytes(), Base64.NO_WRAP);
             //Log.e("", encodedAuth);
             httpget.addHeader("Authorization", "Basic " + encodedAuth);
-
 
             //Execute and get the response.
             HttpResponse response = null;
@@ -228,7 +228,7 @@ public class AsyncGetNews extends AsyncTask<Integer, Void, ArrayList<NewsItem>> 
                     e.printStackTrace();
                 }
             }
-            //todo Check and make sure there is at least 1 result.
+
             return parseJSON(resultString, context);
         }
 
@@ -249,9 +249,11 @@ public class AsyncGetNews extends AsyncTask<Integer, Void, ArrayList<NewsItem>> 
                 return url;
             }
             else {
+                //Return a placeholder image from string resource.
                 return context.getString(R.string.image1);
             }
 
         }
     }
+
 }

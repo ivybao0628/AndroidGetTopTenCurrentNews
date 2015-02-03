@@ -4,6 +4,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
+import com.singwai.currenttoptennews.Utility.Utility;
+import com.singwai.currenttoptennews.activity.Fragment.NewsFragment;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -18,12 +21,20 @@ import java.io.IOException;
 /**
  * Created by Singwai Chan on 2/1/15.
  */
-public class AsyncHttpImageLinkToBitmap extends AsyncTask<String, Void, Bitmap> {
+public class AsyncHttpImageLinkToBitmap extends AsyncTask<String, Void, Void> {
+
+    //Call back to attachment the imageView if needed.
+    private NewsFragment.FragmentCallback fragmentCallback;
+    private NewsItem newsItem;
+
+    public AsyncHttpImageLinkToBitmap(NewsFragment.FragmentCallback fragmentCallback, NewsItem newsItem) {
+        this.fragmentCallback = fragmentCallback;
+        this.newsItem = newsItem;
+    }
 
     @Override
-    protected Bitmap doInBackground(String... params) {
-        Bitmap result = null;
-        String url = params[0];
+    protected Void doInBackground(String... params) {
+        String url = newsItem.getImageLink();
         try {
             HttpUriRequest request = new HttpGet(url);
             HttpClient httpClient = new DefaultHttpClient();
@@ -37,14 +48,19 @@ public class AsyncHttpImageLinkToBitmap extends AsyncTask<String, Void, Bitmap> 
 
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0,
                         bytes.length);
-                return bitmap;
+                newsItem.setBitmap(bitmap);
             } else {
                 throw new IOException("Download failed, HTTP response code " + statusCode + " - " + statusLine.getReasonPhrase());
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return result;
+        return null;
     }
 
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        fragmentCallback.onTaskDone();
+    }
 }

@@ -17,9 +17,6 @@ public class NewsItem {
     String link;
     String pubDate;
     String imageLink;
-
-
-
     Bitmap bitmap;
 
 

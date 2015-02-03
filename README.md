@@ -6,3 +6,6 @@ Here is the list of function that are still missing.
     - Block ViewPager Page 0
     - Setting Go to page 0
     - Error Checking EX. Connectivity, WebService down
+
+@Better design pattern
+@Better variable name
