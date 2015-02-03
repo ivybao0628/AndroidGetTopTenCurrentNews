@@ -57,5 +57,15 @@
         android:paddingBottom="16dp"
         />
 
+    <Button
+        android:id="@+id/buttonResetNews"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_button_reset"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        />
+
+
 
 </LinearLayout>

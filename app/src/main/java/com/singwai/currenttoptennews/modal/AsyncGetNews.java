@@ -43,6 +43,7 @@ public class AsyncGetNews extends AsyncTask<Integer, Void, ArrayList<NewsItem>> 
 
     protected void onPreExecute() {
         dialog.setMessage("Fetching data, please wait.");
+
         dialog.show();
     }
 

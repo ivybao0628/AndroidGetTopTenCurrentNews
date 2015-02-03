@@ -3,6 +3,7 @@ package com.singwai.currenttoptennews;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.view.ViewGroup;
 
 import com.singwai.currenttoptennews.activity.Fragment.BaseFragment;
@@ -24,6 +25,10 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
         this.fragments = fragments;
     }
 
+    @Override
+    public int getItemPosition(Object object){
+        return PagerAdapter.POSITION_NONE;
+    }
 
     @Override
     public Fragment getItem(int position) {

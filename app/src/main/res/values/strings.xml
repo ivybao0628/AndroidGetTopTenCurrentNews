@@ -22,6 +22,7 @@
     <string name="text_text_view_choose_section">Choose Your Section:</string>
     <string name="text_checkbox_is_auto_swap">Turn on Auto Swap</string>
     <string name="text_scale_auto_swap_time">Auto Swap Timer:</string>
+    <string name="text_button_reset">Remove All News</string>
     <array name="news_section">
         <item>home</item>
         <item>news</item>

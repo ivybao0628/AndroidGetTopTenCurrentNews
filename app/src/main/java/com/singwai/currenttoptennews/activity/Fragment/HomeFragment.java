@@ -32,6 +32,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private NumberPicker mNumberPicker;
     private Spinner mSpinner;
     private Button mButton;
+    private Button resetButton;
 
     //Grab all declare all non-view information here.
     @Override
@@ -63,6 +64,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         mButton = (Button)rootView.findViewById(R.id.buttonGetNews);
         mButton.setOnClickListener(this);
         //Fill Configuration data;
+        resetButton = (Button)rootView.findViewById(R.id.buttonResetNews);
+        resetButton.setOnClickListener(this);
         fillConfiguration();
 
         return rootView;
@@ -85,7 +88,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             Configuration.saveConfiguration();
             Configuration.print();
             //Get News
+
             ((MainActivity) this.getActivity()).getLatestNews(configuration.getNewsSectionPosition());
+        }
+        else if (v.getId() == R.id.buttonResetNews){
+            Log.e ("resetNews", "reset");
+            ((MainActivity) this.getActivity()).removeNewsFragment();
         }
     }
 
