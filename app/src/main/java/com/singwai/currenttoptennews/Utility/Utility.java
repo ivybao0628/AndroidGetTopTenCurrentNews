@@ -33,7 +33,7 @@ public class Utility {
     }
 
     public static boolean isOnline (final Context context){
-        Utility.isOnline(context, "www.google.com");
+        return Utility.isOnline(context, "www.google.com");
     }
 
 

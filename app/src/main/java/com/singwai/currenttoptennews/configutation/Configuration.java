@@ -25,6 +25,10 @@ public class Configuration {
             _instance = new Configuration();
             loadConfiguration();
         }
+
+        if (_instance== null){
+            Log.e ("Config is null", "");
+        }
         return _instance;
     }
 

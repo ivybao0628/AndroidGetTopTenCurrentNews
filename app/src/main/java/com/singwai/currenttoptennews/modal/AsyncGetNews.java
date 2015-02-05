@@ -7,6 +7,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.singwai.currenttoptennews.NewsActivity;
+import com.singwai.currenttoptennews.OnTaskCompleted;
 import com.singwai.currenttoptennews.R;
 import com.singwai.currenttoptennews.Utility.Utility;
 
@@ -35,9 +36,11 @@ import java.util.ArrayList;
 public class AsyncGetNews extends AsyncTask<Integer, Void, ArrayList<NewsItem>> {
     private Context context;
     private ProgressDialog dialog;
+    private OnTaskCompleted onTaskCompleted;
 
-    public AsyncGetNews(Context context) {
+    public AsyncGetNews(Context context, OnTaskCompleted onTaskCompleted) {
         this.context = context;
+        this.onTaskCompleted = onTaskCompleted;
         this.dialog = new ProgressDialog(context);
     }
 
@@ -73,8 +76,8 @@ public class AsyncGetNews extends AsyncTask<Integer, Void, ArrayList<NewsItem>> 
             dialog.dismiss();
         }
         Log.e("Checking class", context.getClass() + "");
-        ((NewsActivity) context).addNewsFragment(newsItems);
-        //Call Main activity to populate the
+        ((NewsActivity)context).setNewsItems(newsItems);
+        onTaskCompleted.asyncTaskCompleted();
     }
 
     public static class USATodayNews {

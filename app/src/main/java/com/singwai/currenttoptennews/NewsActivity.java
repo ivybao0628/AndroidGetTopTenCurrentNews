@@ -45,9 +45,13 @@ public class NewsActivity extends ActionBarActivity implements OnTaskCompleted {
         pager = (ViewPager) this.findViewById(R.id.mainViewPager);
 
         getLatestNews(Configuration.get_instance().getNewsSectionPosition());
+        //Add something to tell user the page is loading.
 
     }
 
+    public void setNewsItems (ArrayList<NewsItem> newsItems){
+        this.newsItems = newsItems;
+    }
 
 
     @Override
@@ -66,6 +70,8 @@ public class NewsActivity extends ActionBarActivity implements OnTaskCompleted {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (asyncGetNews != null && asyncGetNews.getStatus() == AsyncTask.Status.RUNNING)
+
+                //todo does this ready working properly?
                 asyncGetNews.cancel(true);
             Log.e("Back Back ", "Back Button");
         }
@@ -84,21 +90,24 @@ public class NewsActivity extends ActionBarActivity implements OnTaskCompleted {
 
     }*/
 
+    //Run the async task
     public void getLatestNews(int section) {
         if (asyncGetNews == null) {
-            asyncGetNews = new AsyncGetNews(this);
+            asyncGetNews = new AsyncGetNews(this, this);
             asyncGetNews.execute(section);
             asyncGetNews = null;
+
         }
     }
 
     //Start swipe, set adapter
     @Override
     public void asyncTaskCompleted() {
+        fragments = new ArrayList<BaseFragment>();
         addNewsFragment(newsItems);
-
-        fragmentPagerAdapter.notifyDataSetChanged();
-        pager.setCurrentItem(1);
+        fragmentPagerAdapter = new MyFragmentPagerAdapter(this.getSupportFragmentManager(), fragments);
+        pager.setAdapter(fragmentPagerAdapter);
+        pager.setCurrentItem(0);
     }
 
     public void addNewsFragment(ArrayList<NewsItem> newsItems) {
@@ -118,8 +127,6 @@ public class NewsActivity extends ActionBarActivity implements OnTaskCompleted {
             fragments.add(fragment);
 
         }
-        fragmentPagerAdapter.notifyDataSetChanged();
-        pager.setCurrentItem(1);
     }
 
 /*    public void removeNewsFragment (){
