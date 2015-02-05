@@ -3,16 +3,12 @@ package com.singwai.currenttoptennews;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.singwai.currenttoptennews.activity.Fragment.BaseFragment;
-import com.singwai.currenttoptennews.activity.Fragment.HomeFragment;
 import com.singwai.currenttoptennews.activity.Fragment.NewsFragment;
 import com.singwai.currenttoptennews.configutation.Configuration;
 import com.singwai.currenttoptennews.modal.AsyncGetNews;
@@ -21,27 +17,49 @@ import com.singwai.currenttoptennews.modal.NewsItem;
 import java.util.ArrayList;
 
 
-public class MainActivity extends ActionBarActivity {
+public class NewsActivity extends ActionBarActivity implements OnTaskCompleted {
 
     private ViewPager pager;
     private ArrayList<BaseFragment> fragments;
+    private ArrayList<NewsItem> newsItems;
     private MyFragmentPagerAdapter fragmentPagerAdapter;
 
     private AsyncGetNews asyncGetNews;
 
-
     private Handler handler;
     private Runnable runnable;
 
-
+    /*
+    *When this activity starts, configuration already has the config that user selected.
+    * Get Latest News (Async task)
+    * OnTaskCompleted
+    *   Build Fragments
+    *   Set adapter
+    *   Start Auto Swipe
+    *
+    */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         pager = (ViewPager) this.findViewById(R.id.mainViewPager);
-        initViewPager();
 
+        getLatestNews(Configuration.get_instance().getNewsSectionPosition());
+
+    }
+
+
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        startAutoSwipeViewPager();
+    }
+
+    @Override
+    public void onPause (){
+        super.onPause();
+        stopAutoSwipeViewPager();
     }
 
     @Override
@@ -54,6 +72,7 @@ public class MainActivity extends ActionBarActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+    /*Setting is handle by another activity
     private void initViewPager() {
         //Build Configuration
         fragments = new ArrayList<>();
@@ -63,10 +82,26 @@ public class MainActivity extends ActionBarActivity {
         pager.setAdapter(fragmentPagerAdapter);
         pager.setCurrentItem(0);
 
+    }*/
+
+    public void getLatestNews(int section) {
+        if (asyncGetNews == null) {
+            asyncGetNews = new AsyncGetNews(this);
+            asyncGetNews.execute(section);
+            asyncGetNews = null;
+        }
+    }
+
+    //Start swipe, set adapter
+    @Override
+    public void asyncTaskCompleted() {
+        addNewsFragment(newsItems);
+
+        fragmentPagerAdapter.notifyDataSetChanged();
+        pager.setCurrentItem(1);
     }
 
     public void addNewsFragment(ArrayList<NewsItem> newsItems) {
-
         for (int i = 0; i < newsItems.size(); i++) {
             NewsItem temp = newsItems.get(i);
             //for (int i = 0; i < 10; i++) {
@@ -85,13 +120,11 @@ public class MainActivity extends ActionBarActivity {
         }
         fragmentPagerAdapter.notifyDataSetChanged();
         pager.setCurrentItem(1);
-        startAutoSwipeViewPager();
-
     }
 
-    public void removeNewsFragment (){
+/*    public void removeNewsFragment (){
         //Check lenght of fragment
-        stopAutoAwipeViewPager();
+        stopAutoSwipeViewPager();
         if (fragments.size()>1){
             //Remove all news fragments
             //Remove from the back for faster performance.
@@ -102,38 +135,34 @@ public class MainActivity extends ActionBarActivity {
         fragmentPagerAdapter.notifyDataSetChanged();
         pager.setCurrentItem(0);
 
-    }
+    }*/
 
     public void startAutoSwipeViewPager() {
-        if (fragments.size() > 1 && Configuration.get_instance(this).getAutoSwap()) {
+        if (fragments!= null && Configuration.get_instance(this).getAutoSwap()) {
             //Turn on auto
             handler = new Handler();
             runnable = new Runnable() {
                 @Override
                 public void run() {
-                    int newPage = MainActivity.this.pager.getCurrentItem();
-                    if (newPage == 0){
-                        handler.postDelayed(this, Configuration.get_instance().getAutoSwapTime() * 1000);
-                        return;
-                    }
-                    newPage = ++newPage % fragments.size();
-                    if (newPage == 0) {
-                        newPage++;
-                    }
-                    pager.setCurrentItem(newPage);
+                    int pageNum = NewsActivity.this.pager.getCurrentItem();
+                    pageNum = ++pageNum % fragments.size();
+                    pager.setCurrentItem(pageNum);
+                    //Set for the next swipe.
                     handler.postDelayed(this, Configuration.get_instance().getAutoSwapTime() * 1000);
-                    Log.e ("swap", "swaping page"+ newPage);
+                    Log.e ("swap", "swaping page"+ pageNum);
                 }
             };
+            //Start the first swipe.
             handler.postDelayed(runnable, Configuration.get_instance().getAutoSwapTime() * 1000 );
         }
     }
 
-    public void stopAutoAwipeViewPager(){
+    public void stopAutoSwipeViewPager(){
         if (handler!= null){
             handler.removeCallbacks(runnable);
         }
     }
+
 
 
 
@@ -155,70 +184,7 @@ public class MainActivity extends ActionBarActivity {
 //        handler.postDelayed(runnable, 5000L);
 //    }
 
-    public void getLatestNews(int section) {
-        if (asyncGetNews == null) {
-            asyncGetNews = new AsyncGetNews(this);
-            asyncGetNews.execute(section);
-            asyncGetNews = null;
-        }
-       //todo move the bing search here.
-    }
-
-    @Override
-    public void onPause (){
-        super.onPause();
-        stopAutoAwipeViewPager();
-
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
-        startAutoSwipeViewPager();
-    }
 
 
-
-
-    private class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-        }
-
-        @Override
-        public void onPageSelected(int position) {
-            //We will download the image on the fly.
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int state) {
-
-        }
-    }
-
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
 }

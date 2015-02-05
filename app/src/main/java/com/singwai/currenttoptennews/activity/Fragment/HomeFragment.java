@@ -1,8 +1,7 @@
 package com.singwai.currenttoptennews.activity.Fragment;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +11,10 @@ import android.widget.CheckBox;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 
-import com.singwai.currenttoptennews.MainActivity;
+import com.singwai.currenttoptennews.HomeActivity;
+import com.singwai.currenttoptennews.NewsActivity;
 import com.singwai.currenttoptennews.R;
 import com.singwai.currenttoptennews.configutation.Configuration;
-import com.singwai.currenttoptennews.modal.AsyncGetNews;
 
 /**
  * Created by Singwai Chan on 2/1/15.
@@ -83,17 +82,15 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View v) {
         if (v.getId() == R.id.buttonGetNews){
             //Save Configuration
-            Configuration.print();
+//            Configuration.print();
             getConfigurationDataFromViews();
             Configuration.saveConfiguration();
-            Configuration.print();
-            //Get News
+//            Configuration.print();
+            //Go to NewsActivity
+            Intent i = new Intent(this.getActivity(), NewsActivity.class);
+            this.getActivity().startActivity(i);
+            //((HomeActivity) this.getActivity()).getLatestNews(configuration.getNewsSectionPosition());
 
-            ((MainActivity) this.getActivity()).getLatestNews(configuration.getNewsSectionPosition());
-        }
-        else if (v.getId() == R.id.buttonResetNews){
-            Log.e ("resetNews", "reset");
-            ((MainActivity) this.getActivity()).removeNewsFragment();
         }
     }
 

@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
 
-import com.singwai.currenttoptennews.MainActivity;
+import com.singwai.currenttoptennews.NewsActivity;
 import com.singwai.currenttoptennews.R;
 import com.singwai.currenttoptennews.Utility.Utility;
 
@@ -73,7 +73,7 @@ public class AsyncGetNews extends AsyncTask<Integer, Void, ArrayList<NewsItem>> 
             dialog.dismiss();
         }
         Log.e("Checking class", context.getClass() + "");
-        ((MainActivity) context).addNewsFragment(newsItems);
+        ((NewsActivity) context).addNewsFragment(newsItems);
         //Call Main activity to populate the
     }
 

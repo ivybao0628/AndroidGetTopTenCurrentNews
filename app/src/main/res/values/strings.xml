@@ -13,7 +13,7 @@
     <string name="autoSwapTime">autoSwapTime</string>
     <string name="newsSectionPosition">newsSectionPosition</string>
 
-    <!--API KEY-->
+    <!-- API KEY -->
     <string name="USA_NEWS_API_KEY">p94pbb9k8d5c9yn9aj6dmaqb</string>
     <string name="MICROSOFT_ACCOUNT_KEYT">OnU2Mxti1LltKV0xiBXh0wvlN3DbXwXngWfcHZ+1tME</string>
 
@@ -23,6 +23,7 @@
     <string name="text_checkbox_is_auto_swap">Turn on Auto Swap</string>
     <string name="text_scale_auto_swap_time">Auto Swap Timer:</string>
     <string name="text_button_reset">Remove All News</string>
+
     <array name="news_section">
         <item>home</item>
         <item>news</item>
@@ -52,6 +53,9 @@
         <item>music</item>
     </array>
 
-        <string name="image1">http://ts4.mm.bing.net/th?id=HN.608007360550535464&amp;w=187&amp;h=186&amp;c=7&amp;rs=1&amp;qlt=90&amp;o=4&amp;pid=1.7</string>
-        <string name="image2">http://ts2.mm.bing.net/th?id=HN.608023939119251704&amp;w=156&amp;h=186&amp;c=7&amp;rs=1&amp;qlt=90&amp;o=4&amp;pid=1.7</string>
+    <string name="image1">http://ts4.mm.bing.net/th?id=HN.608007360550535464&amp;w=187&amp;h=186&amp;c=7&amp;rs=1&amp;qlt=90&amp;o=4&amp;pid=1.7</string>
+    <string name="image2">http://ts2.mm.bing.net/th?id=HN.608023939119251704&amp;w=156&amp;h=186&amp;c=7&amp;rs=1&amp;qlt=90&amp;o=4&amp;pid=1.7</string>
+    <string name="title_activity_news">NewsActivity</string>
+    <string name="hello_world">Hello world!</string>
+
 </resources>

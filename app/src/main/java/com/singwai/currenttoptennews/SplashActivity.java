@@ -3,10 +3,7 @@ package com.singwai.currenttoptennews;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -46,7 +43,7 @@ public class SplashActivity extends Activity {
                 //Load Configuration
                 Configuration.get_instance(SplashActivity.this.getApplicationContext());
                 // Intent to jump to the next activity
-                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
                 startActivity(intent);
                 finish();
             }
