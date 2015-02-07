@@ -1,4 +1,4 @@
-package com.singwai.currenttoptennews.modal;
+package com.singwai.currenttoptennews.model;
 
 import android.graphics.Bitmap;
 

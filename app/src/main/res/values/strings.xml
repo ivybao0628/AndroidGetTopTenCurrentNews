@@ -58,4 +58,9 @@
     <string name="title_activity_news">NewsActivity</string>
     <string name="hello_world">Hello world!</string>
 
+    <!--Text materials for error dialog-->
+
+    <string name="errorDialogMessage">There is an error with the application. Please contact the developer.</string>
+    <string name="networkErrorDialogMessage">There is no network available. Please connect to the network.</string>
+
 </resources>

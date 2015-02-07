@@ -1,5 +1,10 @@
 package com.singwai.currenttoptennews.Utility;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -37,5 +42,26 @@ public class ViewUtility {
             linearLayout.addView(views.get(i));
             Log.e (views.get(i).getId()+"", "My ID is ");
         }
+    }
+
+    /*
+     * This is a function to call when there is an error.
+     * After user click okay, it should exit the application.
+     * To avoid leak window, make sure context is a in the foreground.
+     */
+    public static void existApplicationErrorDialog (final Context context, final String message){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(message);
+        builder.setCancelable(false);
+        builder.setNeutralButton("Exit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+                homeIntent.addCategory(Intent.CATEGORY_HOME);
+                homeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(homeIntent);
+            }
+        });
+
     }
 }

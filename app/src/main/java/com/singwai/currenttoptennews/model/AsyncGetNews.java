@@ -1,4 +1,4 @@
-package com.singwai.currenttoptennews.modal;
+package com.singwai.currenttoptennews.model;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
 
-import com.singwai.currenttoptennews.NewsActivity;
+import com.singwai.currenttoptennews.activity.NewsActivity;
 import com.singwai.currenttoptennews.OnTaskCompleted;
 import com.singwai.currenttoptennews.R;
 import com.singwai.currenttoptennews.Utility.Utility;
@@ -45,9 +45,9 @@ public class AsyncGetNews extends AsyncTask<Integer, Void, ArrayList<NewsItem>> 
     }
 
     protected void onPreExecute() {
-        //dialog.setMessage("Fetching data, please wait.");
-        //dialog.setCanceledOnTouchOutside(false);
-        //dialog.show();
+        dialog.setMessage("Fetching data, please wait.");
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 
     @Override

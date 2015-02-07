@@ -1,4 +1,4 @@
-package com.singwai.currenttoptennews.activity.Fragment;
+package com.singwai.currenttoptennews.fragment;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import com.singwai.currenttoptennews.R;
 import com.singwai.currenttoptennews.Utility.ViewUtility;
-import com.singwai.currenttoptennews.modal.AsyncHttpImageLinkToBitmap;
-import com.singwai.currenttoptennews.modal.NewsItem;
+import com.singwai.currenttoptennews.model.AsyncHttpImageLinkToBitmap;
+import com.singwai.currenttoptennews.model.NewsItem;
 
 /**
  * Created by Singwai Chan on 2/1/15.

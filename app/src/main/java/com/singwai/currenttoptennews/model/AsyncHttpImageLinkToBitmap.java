@@ -1,11 +1,10 @@
-package com.singwai.currenttoptennews.modal;
+package com.singwai.currenttoptennews.model;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
-import com.singwai.currenttoptennews.Utility.Utility;
-import com.singwai.currenttoptennews.activity.Fragment.NewsFragment;
+import com.singwai.currenttoptennews.fragment.NewsFragment;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;

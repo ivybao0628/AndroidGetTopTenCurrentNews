@@ -1,4 +1,4 @@
-package com.singwai.currenttoptennews;
+package com.singwai.currenttoptennews.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +10,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import com.singwai.currenttoptennews.R;
 import com.singwai.currenttoptennews.configutation.Configuration;
 
 

@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.view.ViewGroup;
 
-import com.singwai.currenttoptennews.activity.Fragment.BaseFragment;
+import com.singwai.currenttoptennews.fragment.BaseFragment;
 
 import java.util.ArrayList;
 

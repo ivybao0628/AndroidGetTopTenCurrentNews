@@ -1,4 +1,4 @@
-package com.singwai.currenttoptennews.activity.Fragment;
+package com.singwai.currenttoptennews.fragment;
 
 import android.support.v4.app.Fragment;
 import android.view.View;

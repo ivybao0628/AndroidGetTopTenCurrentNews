@@ -1,16 +1,11 @@
-package com.singwai.currenttoptennews;
+package com.singwai.currenttoptennews.activity;
 
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.singwai.currenttoptennews.R;
-import com.singwai.currenttoptennews.activity.Fragment.HomeFragment;
-
-import java.util.ArrayList;
+import com.singwai.currenttoptennews.fragment.HomeFragment;
 
 public class HomeActivity extends ActionBarActivity {
 

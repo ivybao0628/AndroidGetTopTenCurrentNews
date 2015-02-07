@@ -1,4 +1,4 @@
-package com.singwai.currenttoptennews;
+package com.singwai.currenttoptennews.activity;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,11 +8,14 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 
-import com.singwai.currenttoptennews.activity.Fragment.BaseFragment;
-import com.singwai.currenttoptennews.activity.Fragment.NewsFragment;
+import com.singwai.currenttoptennews.MyFragmentPagerAdapter;
+import com.singwai.currenttoptennews.OnTaskCompleted;
+import com.singwai.currenttoptennews.R;
+import com.singwai.currenttoptennews.fragment.BaseFragment;
+import com.singwai.currenttoptennews.fragment.NewsFragment;
 import com.singwai.currenttoptennews.configutation.Configuration;
-import com.singwai.currenttoptennews.modal.AsyncGetNews;
-import com.singwai.currenttoptennews.modal.NewsItem;
+import com.singwai.currenttoptennews.model.AsyncGetNews;
+import com.singwai.currenttoptennews.model.NewsItem;
 
 import java.util.ArrayList;
 
@@ -43,25 +46,24 @@ public class NewsActivity extends ActionBarActivity implements OnTaskCompleted {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         pager = (ViewPager) this.findViewById(R.id.mainViewPager);
-
         getLatestNews(Configuration.get_instance().getNewsSectionPosition());
         //Add something to tell user the page is loading.
 
     }
 
-    public void setNewsItems (ArrayList<NewsItem> newsItems){
+    public void setNewsItems(ArrayList<NewsItem> newsItems) {
         this.newsItems = newsItems;
     }
 
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         startAutoSwipeViewPager();
     }
 
     @Override
-    public void onPause (){
+    public void onPause() {
         super.onPause();
         stopAutoSwipeViewPager();
     }
@@ -96,11 +98,11 @@ public class NewsActivity extends ActionBarActivity implements OnTaskCompleted {
             asyncGetNews = new AsyncGetNews(this, this);
             asyncGetNews.execute(section);
             asyncGetNews = null;
-
         }
     }
 
-    //Start swipe, set adapter
+    //This method is call when the async task is finished.
+    // Create Fragments, sStart swipe, set adapter
     @Override
     public void asyncTaskCompleted() {
         fragments = new ArrayList<BaseFragment>();
@@ -108,6 +110,7 @@ public class NewsActivity extends ActionBarActivity implements OnTaskCompleted {
         fragmentPagerAdapter = new MyFragmentPagerAdapter(this.getSupportFragmentManager(), fragments);
         pager.setAdapter(fragmentPagerAdapter);
         pager.setCurrentItem(0);
+        startAutoSwipeViewPager();
     }
 
     public void addNewsFragment(ArrayList<NewsItem> newsItems) {
@@ -145,7 +148,7 @@ public class NewsActivity extends ActionBarActivity implements OnTaskCompleted {
     }*/
 
     public void startAutoSwipeViewPager() {
-        if (fragments!= null && Configuration.get_instance(this).getAutoSwap()) {
+        if (fragments != null && Configuration.get_instance(this).getAutoSwap()) {
             //Turn on auto
             handler = new Handler();
             runnable = new Runnable() {
@@ -156,21 +159,19 @@ public class NewsActivity extends ActionBarActivity implements OnTaskCompleted {
                     pager.setCurrentItem(pageNum);
                     //Set for the next swipe.
                     handler.postDelayed(this, Configuration.get_instance().getAutoSwapTime() * 1000);
-                    Log.e ("swap", "swaping page"+ pageNum);
+                    Log.e("swap", "swaping page" + pageNum);
                 }
             };
             //Start the first swipe.
-            handler.postDelayed(runnable, Configuration.get_instance().getAutoSwapTime() * 1000 );
+            handler.postDelayed(runnable, Configuration.get_instance().getAutoSwapTime() * 1000);
         }
     }
 
-    public void stopAutoSwipeViewPager(){
-        if (handler!= null){
+    public void stopAutoSwipeViewPager() {
+        if (handler != null) {
             handler.removeCallbacks(runnable);
         }
     }
-
-
 
 
 // swipe example
@@ -190,8 +191,6 @@ public class NewsActivity extends ActionBarActivity implements OnTaskCompleted {
 //        //2 seconds.
 //        handler.postDelayed(runnable, 5000L);
 //    }
-
-
 
 
 }
